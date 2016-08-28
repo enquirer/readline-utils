@@ -1,0 +1,33 @@
+{
+  "name": "readline-utils",
+  "description": "Readline utils, for moving the cursor or clearing lines.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/readline-utils",
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "jonschlinkert/readline-utils",
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/readline-utils/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "index.js",
+    "LICENSE"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "enquirer",
+    "readline"
+  ],
+  "dependencies": {
+    "extend-shallow": "^2.0.1",
+    "get-value": "^2.0.6",
+    "is-number": "^2.1.0",
+    "mute-stream": "0.0.6"
+  }
+}
