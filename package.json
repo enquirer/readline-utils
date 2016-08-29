@@ -1,17 +1,19 @@
 {
   "name": "readline-utils",
-  "description": "Readline utils, for moving the cursor or clearing lines.",
+  "description": "Readline utils, for moving the cursor, clearing lines, creating a readline interface, and more.",
   "version": "0.1.0",
-  "homepage": "https://github.com/jonschlinkert/readline-utils",
+  "homepage": "https://github.com/enquirer/readline-utils",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
-  "repository": "jonschlinkert/readline-utils",
+  "repository": "enquirer/readline-utils",
   "bugs": {
-    "url": "https://github.com/jonschlinkert/readline-utils/issues"
+    "url": "https://github.com/enquirer/readline-utils/issues"
   },
   "license": "MIT",
   "files": [
     "index.js",
-    "LICENSE"
+    "LICENSE",
+    "README.md",
+    "utils.js"
   ],
   "main": "index.js",
   "engines": {
@@ -20,14 +22,44 @@
   "scripts": {
     "test": "mocha"
   },
-  "keywords": [
-    "enquirer",
-    "readline"
-  ],
   "dependencies": {
+    "arr-flatten": "^1.0.1",
+    "cli-width": "^2.1.0",
     "extend-shallow": "^2.0.1",
     "get-value": "^2.0.6",
     "is-number": "^2.1.0",
-    "mute-stream": "0.0.6"
+    "is-windows": "^0.2.0",
+    "lazy-cache": "^2.0.1",
+    "mute-stream": "0.0.6",
+    "ttys": "0.0.3"
+  },
+  "devDependencies": {
+    "gulp-format-md": "^0.1.10",
+    "mocha": "^3.0.2"
+  },
+  "keywords": [
+    "enquirer",
+    "readline",
+    "utils"
+  ],
+  "verb": {
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "lint": {
+      "reflinks": true
+    },
+    "related": {
+      "list": []
+    },
+    "reflinks": [
+      "verb",
+      "verb-generate-readme"
+    ]
   }
 }
