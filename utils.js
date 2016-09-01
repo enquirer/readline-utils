@@ -18,6 +18,10 @@ require('mute-stream', 'MuteStream');
 require('ttys');
 require = fn;
 
+utils.arrayify = function(val) {
+  return val ? (Array.isArray(val) ? val : [val]) : [];
+};
+
 utils.last = function(arr) {
   return arr[arr.length - 1];
 };

@@ -11,9 +11,6 @@ exports.createOptions = function(options) {
   var opts = utils.extend({}, options);
   opts.output = opts.output || utils.ttys.stdout;
   opts.input = opts.input || utils.ttys.stdin;
-  if (!opts.hasOwnProperty('terminal')) {
-    opts.terminal = true;
-  }
   return opts;
 };
 
@@ -28,12 +25,6 @@ exports.createInterface = function(options) {
   var ms = new utils.MuteStream();
   ms.pipe(opts.output);
   opts.output = ms;
-
-  readline.emitKeypressEvents(opts.input);
-  if (opts.input.isTTY) {
-    opts.input.setRawMode(true);
-  }
-
   return readline.createInterface(opts);
 };
 
@@ -263,16 +254,36 @@ exports.forceClose = function(rl) {
 exports.normalize = function(str, key) {
   var event = utils.extend({}, { key: key || {}, value: str });
   var is = utils.isKey(event);
+
+  // number
+  if (str && str.length === 1 && str >= '0' && str <= '9') {
+    event.key.name = str;
+    return event;
+  }
+
+  // shift+number
+  if (str && str.length === 1 && '~!@#$%^&*()_+'.indexOf(str) !== -1) {
+    event.key.name = str;
+    event.key.shift = true;
+    return event;
+  }
+
   if (!event.key.name || is('enter') || is('return')) return;
-  if (is('up') || is('k') || (is('p') && event.key.ctrl)) {
+
+  if (is('up') || (is('p') && event.key.ctrl)) {
     event.key.name = 'up';
+    return event;
   }
-  if (is('down') || is('j') || (is('n') && event.key.ctrl)) {
+
+  if (is('down') || (is('n') && event.key.ctrl)) {
     event.key.name = 'down';
+    return event;
   }
+
   if (utils.isNumber(event.value) && !/^\s+$/.test(String(event.value))) {
     event.value = Number(event.value);
     event.key.name = 'number';
+    return event;
   }
   return event;
 };
