@@ -38,7 +38,7 @@ exports.createInterface = function(options) {
 
 exports.up = function(rl, n) {
   readline.moveCursor(rl.output, 0, -n || 1);
-  return exports;
+  return this;
 };
 
 /**
@@ -51,7 +51,7 @@ exports.up = function(rl, n) {
 
 exports.down = function(rl, n) {
   readline.moveCursor(rl.output, 0, n || 1);
-  return exports;
+  return this;
 };
 
 /**
@@ -64,7 +64,7 @@ exports.down = function(rl, n) {
 
 exports.left = function(rl, n) {
   readline.moveCursor(rl.output, -n || 1, 0);
-  return exports;
+  return this;
 };
 
 /**
@@ -77,7 +77,7 @@ exports.left = function(rl, n) {
 
 exports.right = function(rl, n) {
   readline.moveCursor(rl.output, n || 1, 0);
-  return exports;
+  return this;
 };
 
 /**
@@ -98,7 +98,7 @@ exports.move = function(rl, key) {
   if (key && exports[key.name]) {
     exports[key.name](rl, 1);
   }
-  return exports;
+  return this;
 };
 
 /**
@@ -129,7 +129,7 @@ exports.auto = function(rl) {
 
 exports.clearLine = function(rl, n) {
   rl.output.write(exports.eraseLines(n));
-  return exports;
+  return this;
 };
 
 /**
@@ -140,10 +140,10 @@ exports.clearLine = function(rl, n) {
  * @api public
  */
 
-exports.clearAfter = function (rl, n) {
+exports.clearAfter = function(rl, n) {
   exports.clearLine(rl, n || 1);
-  return exports;
-},
+  return this;
+};
 
 /**
  * Clear the terminal.
@@ -155,7 +155,7 @@ exports.clearAfter = function (rl, n) {
 
 exports.clearScreen = function(rl) {
   rl.write(null, {ctrl: true, name: 'l'});
-  return exports;
+  return this;
 };
 
 /**
@@ -191,8 +191,8 @@ exports.height = function(str) {
  */
 
 exports.hideCursor = function(rl) {
-  rl.output.write("\x1B[?25l");
-  return exports;
+  rl.output.write('\x1B[?25l');
+  return this;
 };
 
 /**
@@ -204,8 +204,8 @@ exports.hideCursor = function(rl) {
  */
 
 exports.showCursor = function(rl) {
-  rl.output.write("\x1B[?25h");
-  return exports;
+  rl.output.write('\x1B[?25h');
+  return this;
 };
 
 /**
@@ -226,7 +226,7 @@ exports.close = function(rl, fn) {
   }
   rl.pause();
   rl.close();
-  return exports;
+  return this;
 };
 
 /**
@@ -239,7 +239,7 @@ exports.close = function(rl, fn) {
 
 exports.forceClose = function(rl) {
   exports.close(rl);
-  return exports;
+  return this;
 };
 
 /**
@@ -256,8 +256,8 @@ exports.normalize = function(str, key) {
   var is = utils.isKey(event);
 
   // number
-  if (str && str.length === 1 && str >= '0' && str <= '9') {
-    event.key.name = str;
+  if (str && str.length === 1 && /[0-9]/.test(str)) {
+    event.key.name = 'number';
     return event;
   }
 
@@ -330,7 +330,7 @@ exports.clearTrailingLines = function(rl, lines, height) {
     readline.clearLine(rl.output, 0);
     if (len) readline.moveCursor(rl.output, 0, -1);
   }
-  return exports;
+  return this;
 };
 
 /**
@@ -353,7 +353,7 @@ exports.restoreCursorPos = function(rl, cursorPos) {
   readline.moveCursor(rl.output, -line.length, 0);
   readline.moveCursor(rl.output, cursorPos.cols, 0);
   cursorPos = null;
-  return exports;
+  return this;
 };
 
 /**
