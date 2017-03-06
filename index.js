@@ -268,6 +268,11 @@ exports.normalize = function(str, key) {
     return event;
   }
 
+  // '.' doesn't have a `key.name` so return immediately
+  if (!event.key.name && str && str.length === 1 && str === '.') {
+    return event;
+  }
+
   if (!event.key.name || is('enter') || is('return')) return;
 
   if (is('up') || (is('p') && event.key.ctrl)) {
