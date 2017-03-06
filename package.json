@@ -11,8 +11,6 @@
   "license": "MIT",
   "files": [
     "index.js",
-    "LICENSE",
-    "README.md",
     "utils.js"
   ],
   "main": "index.js",
@@ -53,9 +51,9 @@
     ],
     "related": {
       "list": [
+        "choices-separator",
         "enquirer",
-        "prompt-choices",
-        "choices-separator"
+        "prompt-choices"
       ]
     },
     "reflinks": [
