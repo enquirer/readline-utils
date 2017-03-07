@@ -1,7 +1,7 @@
 {
   "name": "readline-utils",
   "description": "Readline utils, for moving the cursor, clearing lines, creating a readline interface, and more.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "homepage": "https://github.com/enquirer/readline-utils",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "contributors": [
