@@ -255,6 +255,12 @@ exports.normalize = function(str, key) {
   var event = utils.extend({}, { key: key || {}, value: str });
   var is = utils.isKey(event);
 
+  // '.' doesn't have a `key.name` so return immediately
+  if (!event.key.name && str && str.length === 1 && str === '.') {
+    event.key.name = 'period';
+    return event;
+  }
+
   // number
   if (str && str.length === 1 && /[0-9]/.test(str)) {
     event.key.name = 'number';
