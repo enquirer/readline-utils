@@ -31,16 +31,6 @@ utils.number = function(n) {
 };
 
 /**
- * Returns a convenience function for checking the value of `event.key.name`
- */
-
-utils.isKey = function(event) {
-  return function(key) {
-    return utils.get(event, 'key.name') === key;
-  };
-};
-
-/**
  * Expose `utils` modules
  */
 

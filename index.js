@@ -253,7 +253,7 @@ exports.forceClose = function(rl) {
 
 exports.normalize = function(str, key) {
   var event = utils.extend({}, { key: key || {}, value: str });
-  var is = utils.isKey(event);
+  var is = isKey(event);
 
   // '.' doesn't have a `key.name` so return immediately
   if (!event.key.name && str && str.length === 1 && str === '.') {
@@ -262,16 +262,24 @@ exports.normalize = function(str, key) {
   }
 
   // number
-  if (str && str.length === 1 && /[0-9]/.test(str)) {
-    event.key.name = 'number';
-    return event;
-  }
+  if (str && str.length === 1) {
+    if (/[0-9]/.test(str)) {
+      event.key.name = 'number';
+      return event;
+    }
 
-  // shift+number
-  if (str && str.length === 1 && '~!@#$%^&*()_+'.indexOf(str) !== -1) {
-    event.key.name = str;
-    event.key.shift = true;
-    return event;
+    // shift+???
+    if ('!#$%&()*+:<>?@^_{|}~'.indexOf(str) !== -1) {
+      event.key.name = str;
+      event.key.shift = true;
+      return event;
+    }
+
+    if (',-\\/;=[]`'.indexOf(str) !== -1) {
+      event.key.name = str;
+      event.key.shift = true;
+      return event;
+    }
   }
 
   if (!event.key.name || is('enter') || is('return')) return;
@@ -325,6 +333,7 @@ exports.eraseLines = function(n) {
  * @param  {Number} `lines` Number of lines to remove
  * @param  {Number} `height` Content height
  * @return {Object} Returns the readline-utils object for chaining
+ * @api public
  */
 
 exports.clearTrailingLines = function(rl, lines, height) {
@@ -341,7 +350,8 @@ exports.clearTrailingLines = function(rl, lines, height) {
 
 /**
  * Remember the cursor position
- * @return {Prompt} Self
+ * @return {Object} readline-utils object
+ * @api public
  */
 
 exports.cursorPosition = function(rl) {
@@ -350,7 +360,8 @@ exports.cursorPosition = function(rl) {
 
 /**
  * Restore the cursor position to where it has been previously stored.
- * @return {Prompt} Self
+ * @return {Object} readline-utils object
+ * @api public
  */
 
 exports.restoreCursorPos = function(rl, cursorPos) {
@@ -431,3 +442,13 @@ exports.forceLineReturn = function(lines, width) {
 exports.normalizeLF = function(str) {
   return !/[\r\n]$/.test(str) ? (str + '\n') : str;
 };
+
+/**
+ * Returns a convenience function for checking the value of `event.key.name`
+ */
+
+function isKey(event) {
+  return function(key) {
+    return utils.get(event, 'key.name') === key;
+  };
+}
