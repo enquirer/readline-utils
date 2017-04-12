@@ -18,6 +18,9 @@ var utils = require('readline-utils');
 
 ## API
 
+<details>
+<summary><strong>.createInterface</strong></summary>
+
 ### [.createInterface](index.js#L23)
 
 Create a readline interface with the given `options`.
@@ -25,6 +28,11 @@ Create a readline interface with the given `options`.
 **Params**
 
 * `options` **{Object}**
+
+</details>
+
+<details>
+<summary><strong>.up</strong></summary>
 
 ### [.up](index.js#L39)
 
@@ -35,6 +43,11 @@ Move cursor up by `n` lines.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Lines up to move. Default is `1`.
 
+</details>
+
+<details>
+<summary><strong>.down</strong></summary>
+
 ### [.down](index.js#L52)
 
 Move cursor down by `n` lines.
@@ -43,6 +56,11 @@ Move cursor down by `n` lines.
 
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Lines down to move. Default is `1`.
+
+</details>
+
+<details>
+<summary><strong>.left</strong></summary>
 
 ### [.left](index.js#L65)
 
@@ -53,6 +71,11 @@ Move cursor left by `n` colums.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Characters to move left. Default is `1`.
 
+</details>
+
+<details>
+<summary><strong>.right</strong></summary>
+
 ### [.right](index.js#L78)
 
 Move cursor right by `n` colums.
@@ -61,6 +84,11 @@ Move cursor right by `n` colums.
 
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Characters to move right. Default is `1`.
+
+</details>
+
+<details>
+<summary><strong>.move</strong></summary>
 
 ### [.move](index.js#L97)
 
@@ -80,6 +108,11 @@ rl.input.on('keypress', function(str, key) {
 });
 ```
 
+</details>
+
+<details>
+<summary><strong>.auto</strong></summary>
+
 ### [.auto](index.js#L117)
 
 Callback function for the `keypress` event, to automatically move cursor up, down, left or right by `1` line.
@@ -96,6 +129,11 @@ var rl = utils.createInterface();
 rl.input.on('keypress', utils.auto(rl));
 ```
 
+</details>
+
+<details>
+<summary><strong>.clearAfter</strong></summary>
+
 ### [.clearAfter](index.js#L143)
 
 Clear `n` lines after the cursor.
@@ -104,6 +142,11 @@ Clear `n` lines after the cursor.
 
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Number of lines to clear
+
+</details>
+
+<details>
+<summary><strong>.clearScreen</strong></summary>
 
 ### [.clearScreen](index.js#L156)
 
@@ -114,6 +157,11 @@ Clear the terminal.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Number of lines to clear
 
+</details>
+
+<details>
+<summary><strong>.lastLine</strong></summary>
+
 ### [.lastLine](index.js#L169)
 
 Get the last line from the given `str`
@@ -122,6 +170,11 @@ Get the last line from the given `str`
 
 * `str` **{String}**
 * `returns` **{String}**
+
+</details>
+
+<details>
+<summary><strong>.height</strong></summary>
 
 ### [.height](index.js#L181)
 
@@ -132,6 +185,11 @@ Get the height (rows) of the given `str`
 * `str` **{String}**
 * `returns` **{Number}**
 
+</details>
+
+<details>
+<summary><strong>.hideCursor</strong></summary>
+
 ### [.hideCursor](index.js#L193)
 
 Hide the cursor.
@@ -140,6 +198,11 @@ Hide the cursor.
 
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Object}**: readline-utils object for chaining
+
+</details>
+
+<details>
+<summary><strong>.showCursor</strong></summary>
 
 ### [.showCursor](index.js#L206)
 
@@ -150,6 +213,11 @@ Show the cursor.
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Object}**: readline-utils object for chaining
 
+</details>
+
+<details>
+<summary><strong>.close</strong></summary>
+
 ### [.close](index.js#L219)
 
 Close the interface, remove event listeners, and restore/unmute prompt functionality
@@ -159,6 +227,11 @@ Close the interface, remove event listeners, and restore/unmute prompt functiona
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Object}**: readline-utils object for chaining
 
+</details>
+
+<details>
+<summary><strong>.forceClose</strong></summary>
+
 ### [.forceClose](index.js#L240)
 
 Close the interface when the keypress is `^C`
@@ -167,6 +240,11 @@ Close the interface when the keypress is `^C`
 
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Object}**: readline-utils object for chaining
+
+</details>
+
+<details>
+<summary><strong>.normalize</strong></summary>
 
 ### [.normalize](index.js#L254)
 
@@ -178,7 +256,12 @@ Normalize values from keypress events.
 * `key` **{Object}**: Keypress `key` object emitted by the `keypress` event.
 * `returns` **{Object}**: Normalized `event` object
 
-### [.eraseLines](index.js#L308)
+</details>
+
+<details>
+<summary><strong>.eraseLines</strong></summary>
+
+### [.eraseLines](index.js#L314)
 
 Erase `n` lines
 
@@ -193,7 +276,50 @@ Erase `n` lines
 utils.eraseLines(3);
 ```
 
-### [.cliWidth](index.js#L373)
+</details>
+
+<details>
+<summary><strong>.clearTrailingLines</strong></summary>
+
+### [.clearTrailingLines](index.js#L337)
+
+Remove lines from the bottom of the terminal.
+
+**Params**
+
+* `rl` **{Number}**: Readline interface
+* `lines` **{Number}**: Number of lines to remove
+* `height` **{Number}**: Content height
+* `returns` **{Object}**: Returns the readline-utils object for chaining
+
+</details>
+
+<details>
+<summary><strong>.cursorPosition</strong></summary>
+
+### [.cursorPosition](index.js#L355)
+
+Remember the cursor position
+
+* `returns` **{Object}**: readline-utils object
+
+</details>
+
+<details>
+<summary><strong>.restoreCursorPos</strong></summary>
+
+### [.restoreCursorPos](index.js#L365)
+
+Restore the cursor position to where it has been previously stored.
+
+* `returns` **{Object}**: readline-utils object
+
+</details>
+
+<details>
+<summary><strong>.cliWidth</strong></summary>
+
+### [.cliWidth](index.js#L382)
 
 Get the width of the terminal
 
@@ -202,7 +328,12 @@ Get the width of the terminal
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Number}**: Returns the number of columns.
 
-### [.breakLines](index.js#L392)
+</details>
+
+<details>
+<summary><strong>.breakLines</strong></summary>
+
+### [.breakLines](index.js#L401)
 
 Break lines longer than the cli width so we can normalize the
 natural line returns behavior accross terminals. (I don't see how
@@ -214,7 +345,12 @@ with https://github.com/jonschlinkert/word-wrap)
 * `lines` **{Array}**: Array of lines
 * `width` **{Number}**: Terminal width
 
-### [.forceLineReturn](index.js#L412)
+</details>
+
+<details>
+<summary><strong>.forceLineReturn</strong></summary>
+
+### [.forceLineReturn](index.js#L421)
 
 Joins the lines returned from [.breakLines](#breakLines).
 
@@ -224,7 +360,12 @@ Joins the lines returned from [.breakLines](#breakLines).
 * `width` **{Number}**: Terminal width
 * `returns` **{String}**
 
-### [.normalizeLF](index.js#L431)
+</details>
+
+<details>
+<summary><strong>.normalizeLF</strong></summary>
+
+### [.normalizeLF](index.js#L440)
 
 Ensure the given `str` ends in a newline.
 
@@ -239,6 +380,8 @@ Ensure the given `str` ends in a newline.
 console.log(utils.normalizeLF('foo'));
 //=> 'foo\n'
 ```
+
+</details>
 
 ## Attribution
 
@@ -263,7 +406,7 @@ Please read the [contributing guide](.github/contributing.md) for advice on open
 | **Commits** | **Contributor** | 
 | --- | --- |
 | 10 | [jonschlinkert](https://github.com/jonschlinkert) |
-| 4 | [doowb](https://github.com/doowb) |
+| 7 | [doowb](https://github.com/doowb) |
 
 ### Building docs
 
@@ -297,4 +440,4 @@ Released under the [MIT License](LICENSE).
 
 ***
 
-_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.4.3, on March 06, 2017._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.5.0, on April 12, 2017._
