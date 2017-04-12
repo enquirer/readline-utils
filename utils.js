@@ -1,5 +1,6 @@
 'use strict';
 
+var isNumber = require('is-number');
 var utils = require('lazy-cache')(require);
 var fn = require;
 require = utils;
@@ -12,7 +13,6 @@ require('arr-flatten', 'flatten');
 require('cli-width');
 require('extend-shallow', 'extend');
 require('get-value', 'get');
-require('is-number');
 require('is-windows');
 require('mute-stream', 'MuteStream');
 require('ttys');
@@ -24,6 +24,10 @@ utils.arrayify = function(val) {
 
 utils.last = function(arr) {
   return arr[arr.length - 1];
+};
+
+utils.isNumber = function(n) {
+  return isNumber(n) && String(n).trim() !== '';
 };
 
 utils.number = function(n) {

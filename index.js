@@ -1,7 +1,7 @@
 'use strict';
 
-const readline = require('readline');
-const utils = require('./utils');
+var readline = require('readline');
+var utils = require('./utils');
 
 /**
  * Create default options
@@ -255,8 +255,7 @@ exports.normalize = function(str, key) {
   var event = utils.extend({}, { key: key || {}, value: str });
   var is = isKey(event);
 
-  // '.' doesn't have a `key.name` so return immediately
-  if (!event.key.name && str && str.length === 1 && str === '.') {
+  if (!event.key.name && str === '.') {
     event.key.name = 'period';
     return event;
   }
@@ -268,7 +267,7 @@ exports.normalize = function(str, key) {
       return event;
     }
 
-    // shift+???
+    // shift+?
     if ('!#$%&()*+:<>?@^_{|}~'.indexOf(str) !== -1) {
       event.key.name = str;
       event.key.shift = true;
@@ -277,7 +276,6 @@ exports.normalize = function(str, key) {
 
     if (',-\\/;=[]`'.indexOf(str) !== -1) {
       event.key.name = str;
-      event.key.shift = true;
       return event;
     }
   }
@@ -294,7 +292,7 @@ exports.normalize = function(str, key) {
     return event;
   }
 
-  if (utils.isNumber(event.value) && !/^\s+$/.test(String(event.value))) {
+  if (utils.isNumber(event.value)) {
     event.value = Number(event.value);
     event.key.name = 'number';
     return event;
