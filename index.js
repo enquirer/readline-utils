@@ -190,7 +190,7 @@ exports.height = function(str) {
  * @api public
  */
 
-exports.hideCursor = function(rl) {
+exports.hideCursor = exports.cursorHide = function(rl) {
   rl.output.write('\x1B[?25l');
   return this;
 };
@@ -203,7 +203,7 @@ exports.hideCursor = function(rl) {
  * @api public
  */
 
-exports.showCursor = function(rl) {
+exports.showCursor = exports.cursorShow = function(rl) {
   rl.output.write('\x1B[?25h');
   return this;
 };
