@@ -15,7 +15,6 @@ require('extend-shallow', 'extend');
 require('get-value', 'get');
 require('is-windows');
 require('mute-stream', 'MuteStream');
-require('ttys');
 require = fn;
 
 utils.arrayify = function(val) {

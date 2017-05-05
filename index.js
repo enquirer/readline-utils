@@ -8,9 +8,9 @@ var utils = require('./utils');
  */
 
 exports.createOptions = function(options) {
-  var opts = utils.extend({}, options);
-  opts.output = opts.output || utils.ttys.stdout;
-  opts.input = opts.input || utils.ttys.stdin;
+  var opts = utils.extend({terminal: true}, options);
+  opts.output = opts.output || process.stdout;
+  opts.input = opts.input || process.stdin;
   return opts;
 };
 
