@@ -19,7 +19,7 @@
   ],
   "main": "index.js",
   "engines": {
-    "node": ">=4.0"
+    "node": ">=0.10.0"
   },
   "scripts": {
     "test": "mocha"
@@ -29,6 +29,7 @@
     "cli-width": "^2.1.0",
     "extend-shallow": "^2.0.1",
     "get-value": "^2.0.6",
+    "is-buffer": "^1.1.5",
     "is-number": "^3.0.0",
     "is-windows": "^1.0.1",
     "lazy-cache": "^2.0.2",
