@@ -29,8 +29,8 @@ utils.isNumber = function(n) {
   return isNumber(n) && String(n).trim() !== '';
 };
 
-utils.number = function(n) {
-  return utils.isNumber(n) ? n : 1;
+utils.toNumber = function(n) {
+  return utils.isNumber(n) ? Number(n) : 1;
 };
 
 /**
