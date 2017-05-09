@@ -322,7 +322,7 @@ Please read the [contributing guide](.github/contributing.md) for advice on open
 
 | **Commits** | **Contributor** | 
 | --- | --- |
-| 24 | [jonschlinkert](https://github.com/jonschlinkert) |
+| 30 | [jonschlinkert](https://github.com/jonschlinkert) |
 | 7 | [doowb](https://github.com/doowb) |
 
 ### Building docs
