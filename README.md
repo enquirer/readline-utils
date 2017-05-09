@@ -18,7 +18,7 @@ var utils = require('readline-utils');
 
 ## API
 
-### [.createInterface](index.js#L25)
+### [.createInterface](index.js#L30)
 
 Create a readline interface with the given `options`.
 
@@ -26,7 +26,7 @@ Create a readline interface with the given `options`.
 
 * `options` **{Object}**
 
-### [.up](index.js#L42)
+### [.up](index.js#L46)
 
 Move cursor up by `n` lines.
 
@@ -35,7 +35,7 @@ Move cursor up by `n` lines.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Lines up to move. Default is `1`.
 
-### [.down](index.js#L55)
+### [.down](index.js#L59)
 
 Move cursor down by `n` lines.
 
@@ -44,7 +44,7 @@ Move cursor down by `n` lines.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Lines down to move. Default is `1`.
 
-### [.left](index.js#L68)
+### [.left](index.js#L72)
 
 Move cursor left by `n` colums.
 
@@ -53,7 +53,7 @@ Move cursor left by `n` colums.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Characters to move left. Default is `1`.
 
-### [.right](index.js#L81)
+### [.right](index.js#L85)
 
 Move cursor right by `n` colums.
 
@@ -62,7 +62,7 @@ Move cursor right by `n` colums.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Characters to move right. Default is `1`.
 
-### [.move](index.js#L100)
+### [.move](index.js#L104)
 
 Move cursor up, down, left or right by `1` line.
 
@@ -80,7 +80,7 @@ rl.input.on('keypress', function(str, key) {
 });
 ```
 
-### [.auto](index.js#L120)
+### [.auto](index.js#L124)
 
 Callback function for the `keypress` event, to automatically move cursor up, down, left or right by `1` line.
 
@@ -96,7 +96,7 @@ var rl = utils.createInterface();
 rl.input.on('keypress', utils.auto(rl));
 ```
 
-### [.clearAfter](index.js#L146)
+### [.clearAfter](index.js#L150)
 
 Clear `n` lines after the cursor.
 
@@ -105,7 +105,7 @@ Clear `n` lines after the cursor.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Number of lines to clear
 
-### [.clearScreen](index.js#L159)
+### [.clearScreen](index.js#L163)
 
 Clear the terminal.
 
@@ -114,7 +114,7 @@ Clear the terminal.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Number of lines to clear
 
-### [.lastLine](index.js#L172)
+### [.lastLine](index.js#L176)
 
 Get the last line from the given `str`
 
@@ -123,7 +123,7 @@ Get the last line from the given `str`
 * `str` **{String}**
 * `returns` **{String}**
 
-### [.height](index.js#L184)
+### [.height](index.js#L188)
 
 Get the height (rows) of the given `str`
 
@@ -132,7 +132,7 @@ Get the height (rows) of the given `str`
 * `str` **{String}**
 * `returns` **{Number}**
 
-### [.hideCursor](index.js#L196)
+### [.hideCursor](index.js#L200)
 
 Hide the cursor.
 
@@ -141,7 +141,7 @@ Hide the cursor.
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Object}**: readline-utils object for chaining
 
-### [.showCursor](index.js#L209)
+### [.showCursor](index.js#L213)
 
 Show the cursor.
 
@@ -150,7 +150,7 @@ Show the cursor.
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Object}**: readline-utils object for chaining
 
-### [.close](index.js#L222)
+### [.close](index.js#L226)
 
 Close the interface, remove event listeners, and restore/unmute prompt functionality
 
@@ -159,7 +159,7 @@ Close the interface, remove event listeners, and restore/unmute prompt functiona
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Object}**: readline-utils object for chaining
 
-### [.forceClose](index.js#L243)
+### [.forceClose](index.js#L247)
 
 Close the interface when the keypress is `^C`
 
@@ -168,17 +168,7 @@ Close the interface when the keypress is `^C`
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Object}**: readline-utils object for chaining
 
-### [.normalize](index.js#L257)
-
-Normalize values from keypress events.
-
-**Params**
-
-* `str` **{String}**: Keypress source string emitted by the `keypress` event.
-* `key` **{Object}**: Keypress `key` object emitted by the `keypress` event.
-* `returns` **{Object}**: Normalized `event` object
-
-### [.eraseLines](index.js#L310)
+### [.eraseLines](index.js#L263)
 
 Erase `n` lines
 
@@ -193,7 +183,7 @@ Erase `n` lines
 utils.eraseLines(3);
 ```
 
-### [.clearTrailingLines](index.js#L333)
+### [.clearTrailingLines](index.js#L286)
 
 Remove lines from the bottom of the terminal.
 
@@ -204,19 +194,19 @@ Remove lines from the bottom of the terminal.
 * `height` **{Number}**: Content height
 * `returns` **{Object}**: Returns the readline-utils object for chaining
 
-### [.cursorPosition](index.js#L351)
+### [.cursorPosition](index.js#L304)
 
 Remember the cursor position
 
 * `returns` **{Object}**: readline-utils object
 
-### [.restoreCursorPos](index.js#L361)
+### [.restoreCursorPos](index.js#L314)
 
 Restore the cursor position to where it has been previously stored.
 
 * `returns` **{Object}**: readline-utils object
 
-### [.cliWidth](index.js#L378)
+### [.cliWidth](index.js#L331)
 
 Get the width of the terminal
 
@@ -225,7 +215,7 @@ Get the width of the terminal
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Number}**: Returns the number of columns.
 
-### [.breakLines](index.js#L397)
+### [.breakLines](index.js#L349)
 
 Break lines longer than the cli width so we can normalize the
 natural line returns behavior accross terminals. (I don't see how
@@ -237,7 +227,7 @@ with https://github.com/jonschlinkert/word-wrap)
 * `lines` **{Array}**: Array of lines
 * `width` **{Number}**: Terminal width
 
-### [.forceLineReturn](index.js#L417)
+### [.forceLineReturn](index.js#L369)
 
 Joins the lines returned from [.breakLines](#breakLines).
 
@@ -247,7 +237,7 @@ Joins the lines returned from [.breakLines](#breakLines).
 * `width` **{Number}**: Terminal width
 * `returns` **{String}**
 
-### [.normalizeLF](index.js#L436)
+### [.normalizeLF](index.js#L388)
 
 Ensure the given `str` ends in a newline.
 
@@ -263,7 +253,7 @@ console.log(utils.normalizeLF('foo'));
 //=> 'foo\n'
 ```
 
-### [.keypress](index.js#L486)
+### [.keypress](index.js#L422)
 
 This module offers the internal "keypress" functionality from node-core's `readline` module, for your own programs and modules to use.
 
@@ -289,7 +279,7 @@ process.stdin.on('keypress', function(ch, key) {
 proces.stdin.resume();
 ```
 
-### [.enableMouse](index.js#L555)
+### [.enableMouse](index.js#L460)
 
 Enables "mousepress" events on the _input_ stream. Note
 that `stream` must be an _output_ stream (i.e. a Writable
@@ -299,7 +289,7 @@ Stream instance), usually `process.stdout`.
 
 * **{Stream}**: stream writable stream instance
 
-### [.disableMouse](index.js#L568)
+### [.disableMouse](index.js#L473)
 
 Disables "mousepress" events from being sent to the _input_
 
@@ -310,19 +300,9 @@ a Writable Stream instance), usually `process.stdout`.
 
 * **{Stream}**: stream writable stream instance
 
-### [listenerCount](index.js#L581)
-
-`EventEmitter.listenerCount()` polyfill, for backwards compat.
-
-**Params**
-
-* **{Emitter}**: emitter event emitter instance
-* **{String}**: event event name
-* `returns` **{Number}**: number of listeners for `event`
-
 ## Attribution
 
-Some of this code was borrowed from [Inquirer][].
+Some of this code was initially borrowed from [Inquirer][].
 
 ## About
 
@@ -342,7 +322,7 @@ Please read the [contributing guide](.github/contributing.md) for advice on open
 
 | **Commits** | **Contributor** | 
 | --- | --- |
-| 20 | [jonschlinkert](https://github.com/jonschlinkert) |
+| 24 | [jonschlinkert](https://github.com/jonschlinkert) |
 | 7 | [doowb](https://github.com/doowb) |
 
 ### Building docs
@@ -377,4 +357,4 @@ Released under the [MIT License](LICENSE).
 
 ***
 
-_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.6.0, on May 07, 2017._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.6.0, on May 09, 2017._
