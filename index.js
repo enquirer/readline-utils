@@ -6,6 +6,7 @@ var flatten = require('arr-flatten');
 var extend = require('extend-shallow');
 var isWindows = require('is-windows');
 var MuteStream = require('mute-stream');
+var isNum = require('is-number');
 var size = require('window-size');
 var utils = module.exports;
 
@@ -529,6 +530,10 @@ utils.normalize = function(s, key) {
     }
   }
 
+  if (!s && key && key.sequence) {
+    s = key.sequence;
+  }
+
   if (typeof s === 'number') {
     s = String(s);
     key.name = 'number';
@@ -771,7 +776,7 @@ function last(arr) {
 }
 
 function isNumber(n) {
-  return isNumber(n) && String(n).trim() !== '';
+  return isNum(n) && String(n).trim() !== '';
 }
 
 function toNumber(n) {
