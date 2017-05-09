@@ -536,6 +536,7 @@ utils.normalize = function(s, key) {
 
   if (typeof s === 'number') {
     s = String(s);
+    key.value = Number(s);
     key.name = 'number';
   }
 
@@ -567,6 +568,7 @@ utils.normalize = function(s, key) {
     key.ctrl = true;
   } else if (s.length === 1 && s >= '0' && s <= '9') {
     // number
+    key.value = Number(s);
     key.name = 'number';
   } else if (s.length === 1 && '!"#$%&()*+:<>?@^_{|}~'.indexOf(s) !== -1) {
     // shift
@@ -747,18 +749,15 @@ utils.normalize = function(s, key) {
   return events;
 };
 
-utils.emitKeypress = function(stream, s, key) {
+utils.emitKeypress = function(emitter, s, key) {
   var events = utils.normalize(s, key);
-
   for (var i = 0; i < events.length; i++) {
     var event = events[i];
-    var k = event.key;
-    var ch = event.ch;
-
-    if (k && k.name === 'mouse') {
-      stream.emit('mousepress', k);
-    } else if (k || ch) {
-      stream.emit('keypress', ch, k);
+    if (event.key && event.key.name === 'mouse') {
+      emitter.emit('mousepress', event.key);
+    } else {
+      emitter.emit('keypress', event.key.name, event.key);
+      emitter.emit(event.key.name, event.key);
     }
   }
 };
