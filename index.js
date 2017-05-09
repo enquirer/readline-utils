@@ -3,14 +3,19 @@
 var EventEmitter = require('events').EventEmitter;
 var isBuffer = require('is-buffer');
 var readline = require('readline');
-var utils = require('./utils');
+var flatten = require('arr-flatten');
+var extend = require('extend-shallow');
+var isWindows = require('is-windows');
+var MuteStream = require('mute-stream');
+var size = require('window-size');
+var get = require('get-value');
 
 /**
  * Create default options
  */
 
 exports.createOptions = function(options) {
-  var opts = utils.extend({ terminal: true }, options);
+  var opts = extend({ terminal: true }, options);
   opts.output = opts.output || process.stdout;
   opts.input = opts.input || process.stdin;
   return opts;
@@ -24,10 +29,9 @@ exports.createOptions = function(options) {
 
 exports.createInterface = function(options) {
   var opts = exports.createOptions(options);
-  var ms = new utils.MuteStream();
+  var ms = new MuteStream();
   ms.pipe(opts.output);
   opts.output = ms;
-  exports.keypress(opts.input);
   return readline.createInterface(opts);
 };
 
@@ -170,7 +174,7 @@ exports.clearScreen = function(rl) {
  */
 
 exports.lastLine = function(str) {
-  return utils.last(str.split('\n'));
+  return last(str.split('\n'));
 };
 
 /**
@@ -255,7 +259,7 @@ exports.forceClose = function(rl) {
  */
 
 exports.normalize = function(str, key) {
-  var event = utils.extend({}, { key: key || {}, value: str });
+  var event = extend({}, { key: key || {}, value: str });
   var is = isKey(event);
 
   if (typeof str === 'number') {
@@ -287,7 +291,7 @@ exports.normalize = function(str, key) {
     return event;
   }
 
-  if (utils.isNumber(event.value)) {
+  if (isNumber(event.value)) {
     event.value = Number(event.value);
     event.key.sequence = event.value;
     event.key.name = 'number';
@@ -308,7 +312,7 @@ exports.normalize = function(str, key) {
  */
 
 exports.eraseLines = function(n) {
-  var num = utils.toNumber(n);
+  var num = toNumber(n);
   var lines = '';
   var i = -1;
 
@@ -331,11 +335,11 @@ exports.eraseLines = function(n) {
  */
 
 exports.clearTrailingLines = function(rl, lines, height) {
-  if (!utils.isNumber(lines)) lines = 0;
+  if (!isNumber(lines)) lines = 0;
   var len = height + lines;
 
   while (len--) {
-    readline.moveCursor(rl.output, -utils.cliWidth(rl), 0);
+    readline.moveCursor(rl.output, -exports.cliWidth(), 0);
     readline.clearLine(rl.output, 0);
     if (len) readline.moveCursor(rl.output, 0, -1);
   }
@@ -375,12 +379,11 @@ exports.restoreCursorPos = function(rl, cursorPos) {
  * @api public
  */
 
-exports.cliWidth = function(rl) {
-  var width = utils.cliWidth({ defaultWidth: 80, output: rl.output });
-  if (utils.isWindows()) {
-    return width - 1;
+exports.cliWidth = function() {
+  if (isWindows()) {
+    return size.width - 1;
   }
-  return width;
+  return size.width;
 };
 
 /**
@@ -418,7 +421,7 @@ exports.forceLineReturn = function(lines, width) {
   if (typeof lines === 'string') {
     lines = exports.breakLines(lines.split('\n'), width);
   }
-  return utils.flatten(lines).join('\n');
+  return flatten(lines).join('\n');
 };
 
 /**
@@ -443,7 +446,7 @@ exports.normalizeLF = function(str) {
 
 function isKey(event) {
   return function(key) {
-    return utils.get(event, 'key.name') === key;
+    return get(event, 'key.name') === key;
   };
 }
 
@@ -1003,3 +1006,15 @@ exports.emitKey = function(stream, s) {
     stream.emit('keypress', ch, key);
   }
 };
+
+function last(arr) {
+  return arr[arr.length - 1];
+}
+
+function isNumber(n) {
+  return isNumber(n) && String(n).trim() !== '';
+}
+
+function toNumber(n) {
+  return isNumber(n) ? Number(n) : 1;
+}
