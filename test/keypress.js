@@ -1,6 +1,7 @@
 'use strict';
 
 require('mocha');
+var readline = require('readline');
 var assert = require('assert');
 var utils = require('..');
 

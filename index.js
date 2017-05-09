@@ -258,47 +258,47 @@ exports.forceClose = function(rl) {
  * @api public
  */
 
-exports.normalize = function(str, key) {
-  var event = extend({}, { key: key || {}, value: str });
-  var is = isKey(event);
+// exports.normalize = function(str, key) {
+//   var event = extend({}, { key: key || {}, value: str });
+//   var is = isKey(event);
 
-  if (typeof str === 'number') {
-    str = String(str);
-  }
+//   if (typeof str === 'number') {
+//     str = String(str);
+//   }
 
-  if (!event.key.name && str === '.') {
-    event.key.name = 'period';
-    return event;
-  }
+//   if (!event.key.name && str === '.') {
+//     event.key.name = 'period';
+//     return event;
+//   }
 
-  // number
-  if (str && str.length === 1) {
-    if (/[0-9]/.test(str)) {
-      event.key.name = 'number';
-      return event;
-    }
-  }
+//   // number
+//   if (str && str.length === 1) {
+//     if (/[0-9]/.test(str)) {
+//       event.key.name = 'number';
+//       return event;
+//     }
+//   }
 
-  if (!event.key.name || is('enter') || is('return')) return;
+//   if (!event.key.name || is('enter') || is('return')) return;
 
-  if (is('up') || (is('p') && event.key.ctrl)) {
-    event.key.name = 'up';
-    return event;
-  }
+//   if (is('up') || (is('p') && event.key.ctrl)) {
+//     event.key.name = 'up';
+//     return event;
+//   }
 
-  if (is('down') || (is('n') && event.key.ctrl)) {
-    event.key.name = 'down';
-    return event;
-  }
+//   if (is('down') || (is('n') && event.key.ctrl)) {
+//     event.key.name = 'down';
+//     return event;
+//   }
 
-  if (isNumber(event.value)) {
-    event.value = Number(event.value);
-    event.key.sequence = event.value;
-    event.key.name = 'number';
-    return event;
-  }
-  return event;
-};
+//   if (isNumber(event.value)) {
+//     event.value = Number(event.value);
+//     event.key.sequence = event.value;
+//     event.key.name = 'number';
+//     return event;
+//   }
+//   return event;
+// };
 
 /**
  * Erase `n` lines
@@ -451,15 +451,9 @@ function isKey(event) {
 }
 
 /**
- * The following code is based on
- * https://github.com/TooTallNate/keypress
- * We had to make some changes to get keypress to
- * work for our needs
+ * The following code is based on code from the node.js core
+ * readline module and https://github.com/TooTallNate/keypress.
  */
-
-// Regexes used for ansi escape code splitting
-var metaKeyCodeRe = /^(?:\x1b)([a-zA-Z0-9])$/;
-var functionKeyCodeRe = /^(?:\x1b+)(O|N|\[|\[\[)(?:(\d+)(?:;(\d+))?([~^$])|(?:1;)?(\d+)?([a-zA-Z]))/;
 
 /**
  * This module offers the internal "keypress" functionality from node-core's
@@ -620,23 +614,27 @@ if (!listenerCount) {
   - two leading ESCs apparently mean the same as one leading ESC
 */
 
-exports.emitKey = function(stream, s) {
+exports.normalize = function(s, key) {
+  var metaKeyCodeRe = /^(?:\x1b)([a-zA-Z0-9])$/;
+  var functionKeyCodeRe = /^(?:\x1b+)(O|N|\[|\[\[)(?:(\d+)(?:;(\d+))?([~^$])|(?:1;)?(\d+)?([a-zA-Z]))/;
+
+  var events = [];
   var parts;
   var ch;
-  var key = {
+  key = extend({
     name: undefined,
     ctrl: false,
     meta: false,
     shift: false,
     value: s
-  };
+  }, key);
 
   if (isBuffer(s)) {
     if (s[0] > 127 && s[1] === undefined) {
       s[0] -= 128;
-      s = '\x1b' + s.toString(stream.encoding || 'utf-8');
+      s = '\x1b' + s.toString();
     } else {
-      s = s.toString(stream.encoding || 'utf-8');
+      s = s.toString();
     }
   }
 
@@ -711,246 +709,87 @@ exports.emitKey = function(stream, s) {
     // Parse the key itself
     switch (code) {
       /* xterm/gnome ESC O letter */
-      case 'OP':
-        key.name = 'f1';
-        break;
-      case 'OQ':
-        key.name = 'f2';
-        break;
-      case 'OR':
-        key.name = 'f3';
-        break;
-      case 'OS':
-        key.name = 'f4';
-        break;
+      case 'OP': key.name = 'f1'; break;
+      case 'OQ': key.name = 'f2'; break;
+      case 'OR': key.name = 'f3'; break;
+      case 'OS': key.name = 'f4'; break;
       /* xterm/rxvt ESC [ number ~ */
-      case '[11~':
-        key.name = 'f1';
-        break;
-      case '[12~':
-        key.name = 'f2';
-        break;
-      case '[13~':
-        key.name = 'f3';
-        break;
-      case '[14~':
-        key.name = 'f4';
-        break;
+      case '[11~': key.name = 'f1'; break;
+      case '[12~': key.name = 'f2'; break;
+      case '[13~': key.name = 'f3'; break;
+      case '[14~': key.name = 'f4'; break;
       /* from Cygwin and used in libuv */
-      case '[[A':
-        key.name = 'f1';
-        break;
-      case '[[B':
-        key.name = 'f2';
-        break;
-      case '[[C':
-        key.name = 'f3';
-        break;
-      case '[[D':
-        key.name = 'f4';
-        break;
-      case '[[E':
-        key.name = 'f5';
-        break;
+      case '[[A': key.name = 'f1'; break;
+      case '[[B': key.name = 'f2'; break;
+      case '[[C': key.name = 'f3'; break;
+      case '[[D': key.name = 'f4'; break;
+      case '[[E': key.name = 'f5'; break;
       /* common */
-      case '[15~':
-        key.name = 'f5';
-        break;
-      case '[17~':
-        key.name = 'f6';
-        break;
-      case '[18~':
-        key.name = 'f7';
-        break;
-      case '[19~':
-        key.name = 'f8';
-        break;
-      case '[20~':
-        key.name = 'f9';
-        break;
-      case '[21~':
-        key.name = 'f10';
-        break;
-      case '[23~':
-        key.name = 'f11';
-        break;
-      case '[24~':
-        key.name = 'f12';
-        break;
+      case '[15~': key.name = 'f5'; break;
+      case '[17~': key.name = 'f6'; break;
+      case '[18~': key.name = 'f7'; break;
+      case '[19~': key.name = 'f8'; break;
+      case '[20~': key.name = 'f9'; break;
+      case '[21~': key.name = 'f10'; break;
+      case '[23~': key.name = 'f11'; break;
+      case '[24~': key.name = 'f12'; break;
       /* xterm ESC [ letter */
-      case '[A':
-        key.name = 'up';
-        break;
-      case '[B':
-        key.name = 'down';
-        break;
-      case '[C':
-        key.name = 'right';
-        break;
-      case '[D':
-        key.name = 'left';
-        break;
-      case '[E':
-        key.name = 'clear';
-        break;
-      case '[F':
-        key.name = 'end';
-        break;
-      case '[H':
-        key.name = 'home';
-        break;
+      case '[A': key.name = 'up'; break;
+      case '[B': key.name = 'down'; break;
+      case '[C': key.name = 'right'; break;
+      case '[D': key.name = 'left'; break;
+      case '[E': key.name = 'clear'; break;
+      case '[F': key.name = 'end'; break;
+      case '[H': key.name = 'home'; break;
       /* xterm/gnome ESC O letter */
-      case 'OA':
-        key.name = 'up';
-        break;
-      case 'OB':
-        key.name = 'down';
-        break;
-      case 'OC':
-        key.name = 'right';
-        break;
-      case 'OD':
-        key.name = 'left';
-        break;
-      case 'OE':
-        key.name = 'clear';
-        break;
-      case 'OF':
-        key.name = 'end';
-        break;
-      case 'OH':
-        key.name = 'home';
-        break;
+      case 'OA': key.name = 'up'; break;
+      case 'OB': key.name = 'down'; break;
+      case 'OC': key.name = 'right'; break;
+      case 'OD': key.name = 'left'; break;
+      case 'OE': key.name = 'clear'; break;
+      case 'OF': key.name = 'end'; break;
+      case 'OH': key.name = 'home'; break;
       /* xterm/rxvt ESC [ number ~ */
-      case '[1~':
-        key.name = 'home';
-        break;
-      case '[2~':
-        key.name = 'insert';
-        break;
-      case '[3~':
-        key.name = 'delete';
-        break;
-      case '[4~':
-        key.name = 'end';
-        break;
-      case '[5~':
-        key.name = 'pageup';
-        break;
-      case '[6~':
-        key.name = 'pagedown';
-        break;
+      case '[1~': key.name = 'home'; break;
+      case '[2~': key.name = 'insert'; break;
+      case '[3~': key.name = 'delete'; break;
+      case '[4~': key.name = 'end'; break;
+      case '[5~': key.name = 'pageup'; break;
+      case '[6~': key.name = 'pagedown'; break;
       /* putty */
-      case '[[5~':
-        key.name = 'pageup';
-        break;
-      case '[[6~':
-        key.name = 'pagedown';
-        break;
+      case '[[5~': key.name = 'pageup'; break;
+      case '[[6~': key.name = 'pagedown'; break;
       /* rxvt */
-      case '[7~':
-        key.name = 'home';
-        break;
-      case '[8~':
-        key.name = 'end';
-        break;
+      case '[7~': key.name = 'home'; break;
+      case '[8~': key.name = 'end'; break;
       /* rxvt keys with modifiers */
-      case '[a':
-        key.name = 'up';
-        key.shift = true;
-        break;
-      case '[b':
-        key.name = 'down';
-        key.shift = true;
-        break;
-      case '[c':
-        key.name = 'right';
-        key.shift = true;
-        break;
-      case '[d':
-        key.name = 'left';
-        key.shift = true;
-        break;
-      case '[e':
-        key.name = 'clear';
-        key.shift = true;
-        break;
+      case '[a': key.name = 'up'; key.shift = true; break;
+      case '[b': key.name = 'down'; key.shift = true; break;
+      case '[c': key.name = 'right'; key.shift = true; break;
+      case '[d': key.name = 'left'; key.shift = true; break;
+      case '[e': key.name = 'clear'; key.shift = true; break;
 
-      case '[2$':
-        key.name = 'insert';
-        key.shift = true;
-        break;
-      case '[3$':
-        key.name = 'delete';
-        key.shift = true;
-        break;
-      case '[5$':
-        key.name = 'pageup';
-        key.shift = true;
-        break;
-      case '[6$':
-        key.name = 'pagedown';
-        key.shift = true;
-        break;
-      case '[7$':
-        key.name = 'home';
-        key.shift = true;
-        break;
-      case '[8$':
-        key.name = 'end';
-        key.shift = true;
-        break;
+      case '[2$': key.name = 'insert'; key.shift = true; break;
+      case '[3$': key.name = 'delete'; key.shift = true; break;
+      case '[5$': key.name = 'pageup'; key.shift = true; break;
+      case '[6$': key.name = 'pagedown'; key.shift = true; break;
+      case '[7$': key.name = 'home'; key.shift = true; break;
+      case '[8$': key.name = 'end'; key.shift = true; break;
 
-      case 'Oa':
-        key.name = 'up';
-        key.ctrl = true;
-        break;
-      case 'Ob':
-        key.name = 'down';
-        key.ctrl = true;
-        break;
-      case 'Oc':
-        key.name = 'right';
-        key.ctrl = true;
-        break;
-      case 'Od':
-        key.name = 'left';
-        key.ctrl = true;
-        break;
-      case 'Oe':
-        key.name = 'clear';
-        key.ctrl = true;
-        break;
+      case 'Oa': key.name = 'up'; key.ctrl = true; break;
+      case 'Ob': key.name = 'down'; key.ctrl = true; break;
+      case 'Oc': key.name = 'right'; key.ctrl = true; break;
+      case 'Od': key.name = 'left'; key.ctrl = true; break;
+      case 'Oe': key.name = 'clear'; key.ctrl = true; break;
 
-      case '[2^':
-        key.name = 'insert';
-        key.ctrl = true;
-        break;
-      case '[3^':
-        key.name = 'delete';
-        key.ctrl = true;
-        break;
-      case '[5^':
-        key.name = 'pageup';
-        key.ctrl = true;
-        break;
-      case '[6^':
-        key.name = 'pagedown';
-        key.ctrl = true;
-        break;
-      case '[7^':
-        key.name = 'home';
-        key.ctrl = true;
-        break;
-      case '[8^':
-        key.name = 'end';
-        key.ctrl = true;
-        break;
+      case '[2^': key.name = 'insert'; key.ctrl = true; break;
+      case '[3^': key.name = 'delete'; key.ctrl = true; break;
+      case '[5^': key.name = 'pageup'; key.ctrl = true; break;
+      case '[6^': key.name = 'pagedown'; key.ctrl = true; break;
+      case '[7^': key.name = 'home'; key.ctrl = true; break;
+      case '[8^': key.name = 'end'; key.ctrl = true; break;
       /* misc. */
-      case '[Z':
-        key.name = 'tab';
-        key.shift = true;
-        break;
+      case '[Z': key.name = 'tab'; key.shift = true; break;
       default:
         key.name = 'undefined';
         break;
@@ -959,9 +798,8 @@ exports.emitKey = function(stream, s) {
     // Got a longer-than-one string of characters.
     // Probably a paste, since it wasn't a control sequence.
     for (var i = 0; i < s.length; i++) {
-      exports.emitKey(stream, s[i]);
+      events.push(exports.normalize(s[i]));
     }
-    return;
   }
 
   // XXX: this "mouse" parsing code is NOT part of the node-core standard
@@ -991,19 +829,40 @@ exports.emitKey = function(stream, s) {
     }
   }
 
+  if (key.name === 'p' && key.ctrl) {
+    key.name = 'up';
+  }
+
+  if (key.name === 'n' && key.ctrl) {
+    key.name = 'down';
+  }
+
   // Don't emit a key if no name was found
-  if (key.name === undefined) {
-    key = undefined;
+  if (!key.name) {
+    return events;
   }
 
   if (s.length === 1) {
     ch = s;
   }
 
-  if (key && key.name === 'mouse') {
-    stream.emit('mousepress', key);
-  } else if (key || ch) {
-    stream.emit('keypress', ch, key);
+  events.push({ch: ch, key: key});
+  return events;
+};
+
+exports.emitKey = function(stream, s, key) {
+  var events = exports.normalize(s, key);
+
+  for (var i = 0; i < events.length; i++) {
+    var event = events[i];
+    var k = event.key;
+    var ch = event.ch;
+
+    if (k && k.name === 'mouse') {
+      stream.emit('mousepress', k);
+    } else if (k || ch) {
+      stream.emit('keypress', ch, k);
+    }
   }
 };
 
