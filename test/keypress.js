@@ -14,7 +14,7 @@ function listen(val, num, cb) {
     count++;
   });
 
-  utils.emitKey(process.stdin, val);
+  utils.emitKeypress(process.stdin, val);
   process.stdin.removeAllListeners();
   assert.strictEqual(count, num);
   cb(events);

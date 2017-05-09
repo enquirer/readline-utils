@@ -1,6 +1,5 @@
 'use strict';
 
-var EventEmitter = require('events').EventEmitter;
 var isBuffer = require('is-buffer');
 var readline = require('readline');
 var flatten = require('arr-flatten');
@@ -8,13 +7,13 @@ var extend = require('extend-shallow');
 var isWindows = require('is-windows');
 var MuteStream = require('mute-stream');
 var size = require('window-size');
-var get = require('get-value');
+var utils = module.exports;
 
 /**
  * Create default options
  */
 
-exports.createOptions = function(options) {
+utils.createOptions = function(options) {
   var opts = extend({ terminal: true }, options);
   opts.output = opts.output || process.stdout;
   opts.input = opts.input || process.stdin;
@@ -27,8 +26,8 @@ exports.createOptions = function(options) {
  * @api public
  */
 
-exports.createInterface = function(options) {
-  var opts = exports.createOptions(options);
+utils.createInterface = function(options) {
+  var opts = utils.createOptions(options);
   var ms = new MuteStream();
   ms.pipe(opts.output);
   opts.output = ms;
@@ -43,7 +42,7 @@ exports.createInterface = function(options) {
  * @api public
  */
 
-exports.up = function(rl, n) {
+utils.up = function(rl, n) {
   readline.moveCursor(rl.output, 0, -(n || 1));
   return this;
 };
@@ -56,7 +55,7 @@ exports.up = function(rl, n) {
  * @api public
  */
 
-exports.down = function(rl, n) {
+utils.down = function(rl, n) {
   readline.moveCursor(rl.output, 0, n || 1);
   return this;
 };
@@ -69,7 +68,7 @@ exports.down = function(rl, n) {
  * @api public
  */
 
-exports.left = function(rl, n) {
+utils.left = function(rl, n) {
   readline.moveCursor(rl.output, -(n || 1));
   return this;
 };
@@ -82,7 +81,7 @@ exports.left = function(rl, n) {
  * @api public
  */
 
-exports.right = function(rl, n) {
+utils.right = function(rl, n) {
   readline.moveCursor(rl.output, n || 1);
   return this;
 };
@@ -101,7 +100,7 @@ exports.right = function(rl, n) {
  * @api public
  */
 
-exports.move = function(rl, key, n) {
+utils.move = function(rl, key, n) {
   if (key && exports[key.name]) {
     exports[key.name](rl, n);
   }
@@ -121,9 +120,9 @@ exports.move = function(rl, key, n) {
  * @api public
  */
 
-exports.auto = function(rl) {
+utils.auto = function(rl) {
   return function(s, key) {
-    exports.move(rl, key);
+    utils.move(rl, key);
   };
 };
 
@@ -134,8 +133,8 @@ exports.auto = function(rl) {
  * @param {Number} `n` Number of lines to clear
  */
 
-exports.clearLine = function(rl, n) {
-  rl.output.write(exports.eraseLines(n));
+utils.clearLine = function(rl, n) {
+  rl.output.write(utils.eraseLines(n));
   return this;
 };
 
@@ -147,8 +146,8 @@ exports.clearLine = function(rl, n) {
  * @api public
  */
 
-exports.clearAfter = function(rl, n) {
-  exports.clearLine(rl, n || 1);
+utils.clearAfter = function(rl, n) {
+  utils.clearLine(rl, n || 1);
   return this;
 };
 
@@ -160,7 +159,7 @@ exports.clearAfter = function(rl, n) {
  * @api public
  */
 
-exports.clearScreen = function(rl) {
+utils.clearScreen = function(rl) {
   rl.write(null, { ctrl: true, name: 'l' });
   return this;
 };
@@ -173,7 +172,7 @@ exports.clearScreen = function(rl) {
  * @api public
  */
 
-exports.lastLine = function(str) {
+utils.lastLine = function(str) {
   return last(str.split('\n'));
 };
 
@@ -185,7 +184,7 @@ exports.lastLine = function(str) {
  * @api public
  */
 
-exports.height = function(str) {
+utils.height = function(str) {
   return str.split('\n').length;
 };
 
@@ -197,7 +196,7 @@ exports.height = function(str) {
  * @api public
  */
 
-exports.hideCursor = exports.cursorHide = function(rl) {
+utils.hideCursor = utils.cursorHide = function(rl) {
   rl.output.write('\x1B[?25l');
   return this;
 };
@@ -210,7 +209,7 @@ exports.hideCursor = exports.cursorHide = function(rl) {
  * @api public
  */
 
-exports.showCursor = exports.cursorShow = function(rl) {
+utils.showCursor = utils.cursorShow = function(rl) {
   rl.output.write('\x1B[?25h');
   return this;
 };
@@ -223,8 +222,8 @@ exports.showCursor = exports.cursorShow = function(rl) {
  * @api public
  */
 
-exports.close = function(rl, fn) {
-  fn = fn || exports.forceClose.bind(exports, rl);
+utils.close = function(rl, fn) {
+  fn = fn || utils.forceClose.bind(exports, rl);
   process.removeListener('exit', fn);
   rl.removeListener('SIGINT', fn);
   if (typeof rl.output.unmute === 'function') {
@@ -244,61 +243,10 @@ exports.close = function(rl, fn) {
  * @api public
  */
 
-exports.forceClose = function(rl) {
-  exports.close(rl);
+utils.forceClose = function(rl) {
+  utils.close(rl);
   return this;
 };
-
-/**
- * Normalize values from keypress events.
- *
- * @param {String} `str` Keypress source string emitted by the `keypress` event.
- * @param {Object} `key` Keypress `key` object emitted by the `keypress` event.
- * @return {Object} Normalized `event` object
- * @api public
- */
-
-// exports.normalize = function(str, key) {
-//   var event = extend({}, { key: key || {}, value: str });
-//   var is = isKey(event);
-
-//   if (typeof str === 'number') {
-//     str = String(str);
-//   }
-
-//   if (!event.key.name && str === '.') {
-//     event.key.name = 'period';
-//     return event;
-//   }
-
-//   // number
-//   if (str && str.length === 1) {
-//     if (/[0-9]/.test(str)) {
-//       event.key.name = 'number';
-//       return event;
-//     }
-//   }
-
-//   if (!event.key.name || is('enter') || is('return')) return;
-
-//   if (is('up') || (is('p') && event.key.ctrl)) {
-//     event.key.name = 'up';
-//     return event;
-//   }
-
-//   if (is('down') || (is('n') && event.key.ctrl)) {
-//     event.key.name = 'down';
-//     return event;
-//   }
-
-//   if (isNumber(event.value)) {
-//     event.value = Number(event.value);
-//     event.key.sequence = event.value;
-//     event.key.name = 'number';
-//     return event;
-//   }
-//   return event;
-// };
 
 /**
  * Erase `n` lines
@@ -311,7 +259,7 @@ exports.forceClose = function(rl) {
  * @api public
  */
 
-exports.eraseLines = function(n) {
+utils.eraseLines = function(n) {
   var num = toNumber(n);
   var lines = '';
   var i = -1;
@@ -334,12 +282,12 @@ exports.eraseLines = function(n) {
  * @api public
  */
 
-exports.clearTrailingLines = function(rl, lines, height) {
+utils.clearTrailingLines = function(rl, lines, height) {
   if (!isNumber(lines)) lines = 0;
   var len = height + lines;
 
   while (len--) {
-    readline.moveCursor(rl.output, -exports.cliWidth(), 0);
+    readline.moveCursor(rl.output, -utils.cliWidth(), 0);
     readline.clearLine(rl.output, 0);
     if (len) readline.moveCursor(rl.output, 0, -1);
   }
@@ -352,7 +300,7 @@ exports.clearTrailingLines = function(rl, lines, height) {
  * @api public
  */
 
-exports.cursorPosition = function(rl) {
+utils.cursorPosition = function(rl) {
   return rl._getCursorPos();
 };
 
@@ -362,7 +310,7 @@ exports.cursorPosition = function(rl) {
  * @api public
  */
 
-exports.restoreCursorPos = function(rl, cursorPos) {
+utils.restoreCursorPos = function(rl, cursorPos) {
   if (!cursorPos) return;
   var line = rl._prompt + rl.line;
   readline.moveCursor(rl.output, -line.length, 0);
@@ -379,7 +327,7 @@ exports.restoreCursorPos = function(rl, cursorPos) {
  * @api public
  */
 
-exports.cliWidth = function() {
+utils.cliWidth = function() {
   if (isWindows()) {
     return size.width - 1;
   }
@@ -397,7 +345,7 @@ exports.cliWidth = function() {
  * @api public
  */
 
-exports.breakLines = function(lines, width) {
+utils.breakLines = function(lines, width) {
   var regex = new RegExp('(?:(?:\\033[[0-9;]*m)*.?){1,' + width + '}', 'g');
   return lines.map(function(line) {
     var matches = line.match(regex);
@@ -417,9 +365,9 @@ exports.breakLines = function(lines, width) {
  * @api public
  */
 
-exports.forceLineReturn = function(lines, width) {
+utils.forceLineReturn = function(lines, width) {
   if (typeof lines === 'string') {
-    lines = exports.breakLines(lines.split('\n'), width);
+    lines = utils.breakLines(lines.split('\n'), width);
   }
   return flatten(lines).join('\n');
 };
@@ -436,19 +384,9 @@ exports.forceLineReturn = function(lines, width) {
  * @api public
  */
 
-exports.normalizeLF = function(str) {
+utils.normalizeLF = function(str) {
   return !/[\r\n]$/.test(str) ? str + '\n' : str;
 };
-
-/**
- * Returns a convenience function for checking the value of `event.key.name`
- */
-
-function isKey(event) {
-  return function(key) {
-    return get(event, 'key.name') === key;
-  };
-}
 
 /**
  * The following code is based on code from the node.js core
@@ -480,16 +418,14 @@ function isKey(event) {
  * @api public
  */
 
-exports.keypress = function(stream) {
-  if (isEmittingKeypress(stream)) return;
-
+utils.keypress = function(stream) {
   var StringDecoder = require('string_decoder').StringDecoder; // lazy load
   stream._keypressDecoder = new StringDecoder('utf8');
 
   function onData(b) {
-    if (listenerCount(stream, 'keypress') > 0) {
+    if (stream.listenerCount('keypress') > 0) {
       var r = stream._keypressDecoder.write(b);
-      if (r) exports.emitKey(stream, r);
+      if (r) utils.emitKeypress(stream, r);
     } else {
       // Nobody's watching anyway
       stream.removeListener('data', onData);
@@ -504,41 +440,12 @@ exports.keypress = function(stream) {
     }
   }
 
-  if (listenerCount(stream, 'keypress') > 0) {
+  if (stream.listenerCount('keypress') > 0) {
     stream.on('data', onData);
   } else {
     stream.on('newListener', onNewListener);
   }
 };
-
-/**
- * Returns `true` if the stream is already emitting "keypress" events.
- * `false` otherwise.
- *
- * @param {Stream} stream readable stream
- * @return {Boolean} `true` if the stream is emitting "keypress" events
- * @api private
- */
-
-function isEmittingKeypress(stream) {
-  var rtn = !!stream._keypressDecoder;
-  if (!rtn) {
-    // XXX: for older versions of node (v0.6.x, v0.8.x) we want to remove the
-    // existing "data" and "newListener" keypress events since they won't include
-    // this `keypress` module extensions (like "mousepress" events).
-    stream.listeners('data').slice(0).forEach(function(l) {
-      if (l.name === 'onData' && /exports.emitKey/.test(l.toString())) {
-        stream.removeListener('data', l);
-      }
-    });
-    stream.listeners('newListener').slice(0).forEach(function(l) {
-      if (l.name === 'onNewListener' && /keypress/.test(l.toString())) {
-        stream.removeListener('newListener', l);
-      }
-    });
-  }
-  return rtn;
-}
 
 /**
  * Enables "mousepress" events on the *input* stream. Note
@@ -549,7 +456,7 @@ function isEmittingKeypress(stream) {
  * @api public
  */
 
-exports.enableMouse = function(stream) {
+utils.enableMouse = function(stream) {
   stream.write('\x1b[?1000h');
 };
 
@@ -562,25 +469,9 @@ exports.enableMouse = function(stream) {
  * @api public
  */
 
-exports.disableMouse = function(stream) {
+utils.disableMouse = function(stream) {
   stream.write('\x1b[?1000l');
 };
-
-/**
- * `EventEmitter.listenerCount()` polyfill, for backwards compat.
- *
- * @param {Emitter} emitter event emitter instance
- * @param {String} event event name
- * @return {Number} number of listeners for `event`
- * @api public
- */
-
-var listenerCount = EventEmitter.listenerCount;
-if (!listenerCount) {
-  listenerCount = function(emitter, event) {
-    return emitter.listeners(event).length;
-  };
-}
 
 ///////////////////////////////////////////////////////////////////////
 // Below this function is code from node-core's `readline.js` module //
@@ -614,13 +505,13 @@ if (!listenerCount) {
   - two leading ESCs apparently mean the same as one leading ESC
 */
 
-exports.normalize = function(s, key) {
+utils.normalize = function(s, key) {
   var metaKeyCodeRe = /^(?:\x1b)([a-zA-Z0-9])$/;
   var functionKeyCodeRe = /^(?:\x1b+)(O|N|\[|\[\[)(?:(\d+)(?:;(\d+))?([~^$])|(?:1;)?(\d+)?([a-zA-Z]))/;
 
   var events = [];
   var parts;
-  var ch;
+  var ch = s;
   key = extend({
     name: undefined,
     ctrl: false,
@@ -640,6 +531,7 @@ exports.normalize = function(s, key) {
 
   if (typeof s === 'number') {
     s = String(s);
+    key.name = 'number';
   }
 
   key.sequence = String(s);
@@ -798,7 +690,7 @@ exports.normalize = function(s, key) {
     // Got a longer-than-one string of characters.
     // Probably a paste, since it wasn't a control sequence.
     for (var i = 0; i < s.length; i++) {
-      events.push(exports.normalize(s[i]));
+      events = events.concat(utils.normalize(s[i]));
     }
   }
 
@@ -850,8 +742,8 @@ exports.normalize = function(s, key) {
   return events;
 };
 
-exports.emitKey = function(stream, s, key) {
-  var events = exports.normalize(s, key);
+utils.emitKeypress = function(stream, s, key) {
+  var events = utils.normalize(s, key);
 
   for (var i = 0; i < events.length; i++) {
     var event = events[i];
@@ -864,6 +756,14 @@ exports.emitKey = function(stream, s, key) {
       stream.emit('keypress', ch, k);
     }
   }
+};
+
+utils.key = {
+  up: '\u001b[A',
+  down: '\u001b[B',
+  left: '\u001b[D',
+  right: '\u001b[C',
+  ctrlc: '\u0003'
 };
 
 function last(arr) {
