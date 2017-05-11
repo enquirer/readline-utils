@@ -1,7 +1,7 @@
 {
   "name": "readline-utils",
   "description": "Readline utils, for moving the cursor, clearing lines, creating a readline interface, and more.",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "homepage": "https://github.com/enquirer/readline-utils",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "contributors": [
@@ -26,19 +26,16 @@
   },
   "dependencies": {
     "arr-flatten": "^1.0.3",
-    "cli-width": "^2.1.0",
     "extend-shallow": "^2.0.1",
-    "get-value": "^2.0.6",
     "is-buffer": "^1.1.5",
     "is-number": "^3.0.0",
     "is-windows": "^1.0.1",
-    "lazy-cache": "^2.0.2",
-    "mute-stream": "^0.0.7"
+    "mute-stream": "^0.0.7",
+    "window-size": "^1.0.0"
   },
   "devDependencies": {
-    "gulp-format-md": "^0.1.12",
     "mocha": "^3.3.0",
-    "window-size": "^1.0.0"
+    "gulp-format-md": "^0.1.12"
   },
   "keywords": [
     "enquirer",
@@ -61,10 +58,6 @@
         "prompt-choices"
       ]
     },
-    "reflinks": [
-      "verb",
-      "verb-generate-readme"
-    ],
     "lint": {
       "reflinks": true
     }
