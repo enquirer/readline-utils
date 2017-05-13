@@ -347,7 +347,12 @@ utils.cliWidth = function() {
  */
 
 utils.breakLines = function(lines, width) {
-  var regex = new RegExp('(?:(?:\\033[[0-9;]*m)*.?){1,' + width + '}', 'g');
+  var quantifier = '';
+  if (width > 1) {
+    quantifier = '{1,' + width + '}';
+  }
+
+  var regex = new RegExp('(?:(?:\\033[[0-9;]*m)*.?)' + quantifier, 'g');
   return lines.map(function(line) {
     var matches = line.match(regex);
     if (!matches) return '';
