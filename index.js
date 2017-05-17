@@ -1,13 +1,14 @@
 'use strict';
 
-var isBuffer = require('is-buffer');
 var readline = require('readline');
+var isBuffer = require('is-buffer');
 var flatten = require('arr-flatten');
 var extend = require('extend-shallow');
 var isWindows = require('is-windows');
 var MuteStream = require('mute-stream');
-var isNum = require('is-number');
+var stripColor = require('strip-color');
 var size = require('window-size');
+var isNum = require('is-number');
 var utils = module.exports;
 
 /**
@@ -190,7 +191,9 @@ utils.height = function(str) {
 };
 
 /**
- * Hide the cursor.
+ * Hide the cursor so it doesn't show during a prompt. This is
+ * useful for multiple-choice or list prompts, or any prompt
+ * where the user will not be entering input.
  *
  * @param {Readline} `rl` Readline interface
  * @return {Object} readline-utils object for chaining
@@ -323,16 +326,12 @@ utils.restoreCursorPos = function(rl, cursorPos) {
 /**
  * Get the width of the terminal
  *
- * @param {Readline} `rl` Readline interface
  * @return {Number} Returns the number of columns.
  * @api public
  */
 
 utils.cliWidth = function() {
-  if (isWindows()) {
-    return size.width - 1;
-  }
-  return size.width;
+  return isWindows() ? size.width - 1 : size.width;
 };
 
 /**
@@ -391,7 +390,18 @@ utils.forceLineReturn = function(lines, width) {
  */
 
 utils.normalizeLF = function(str) {
-  return !/[\r\n]$/.test(str) ? str + '\n' : str;
+  if (str.slice(-1) !== '\n') {
+    str += '\n';
+  }
+  return str;
+};
+
+/**
+ * Strip ansi styles from the given string.
+ */
+
+utils.unstyle = function(str) {
+  return stripColor(str);
 };
 
 /**
@@ -525,6 +535,16 @@ utils.normalize = function(s, key) {
     shift: false,
     value: s
   }, key);
+
+  if (s === null && key.name === 'down') {
+    key.ctrl = true;
+    s = 'n';
+  }
+
+  if (s === null && key.name === 'up') {
+    key.ctrl = true;
+    s = 'p';
+  }
 
   if (isBuffer(s)) {
     if (s[0] > 127 && s[1] === undefined) {
