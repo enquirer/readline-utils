@@ -753,11 +753,11 @@ utils.normalize = function(s, key) {
     }
   }
 
-  if (key.name === 'p' && key.ctrl) {
+  if (key.name === 'p' && key.ctrl && !key.shift && !key.meta) {
     key.name = 'up';
   }
 
-  if (key.name === 'n' && key.ctrl) {
+  if (key.name === 'n' && key.ctrl && !key.shift && !key.meta) {
     key.name = 'down';
   }
 
