@@ -1,5 +1,8 @@
 'use strict';
 
+var koalas = require('koalas');
+var isNum = require('is-number');
+var size = require('window-size');
 var readline = require('readline');
 var isBuffer = require('is-buffer');
 var flatten = require('arr-flatten');
@@ -7,8 +10,7 @@ var extend = require('extend-shallow');
 var isWindows = require('is-windows');
 var MuteStream = require('mute-stream');
 var stripColor = require('strip-color');
-var size = require('window-size');
-var isNum = require('is-number');
+var sizeUtils = require('window-size/utils');
 var utils = module.exports;
 
 /**
@@ -291,7 +293,7 @@ utils.clearTrailingLines = function(rl, lines, height) {
   var len = height + lines;
 
   while (len--) {
-    readline.moveCursor(rl.output, -utils.cliWidth(), 0);
+    readline.moveCursor(rl.output, -utils.cliWidth(80), 0);
     readline.clearLine(rl.output, 0);
     if (len) readline.moveCursor(rl.output, 0, -1);
   }
@@ -326,12 +328,16 @@ utils.restoreCursorPos = function(rl, cursorPos) {
 /**
  * Get the width of the terminal
  *
+ * @param  {Number} `fallback` A fallback width to use if the actual width is not found.
  * @return {Number} Returns the number of columns.
  * @api public
  */
 
-utils.cliWidth = function() {
-  return isWindows() ? size.width - 1 : size.width;
+utils.cliWidth = function(fallback) {
+  var windows = isWindows();
+  var modifier = windows ? 1 : 0;
+  size = size || (windows ? sizeUtils.win() : sizeUtils.tput());
+  return koalas(size && size.width, fallback, modifier) - modifier;
 };
 
 /**
