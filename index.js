@@ -599,7 +599,7 @@ utils.normalize = function(s, key) {
     // shift
     key.name = s;
     key.shift = true;
-  } else if (',-\\/;=[]`'.indexOf(s) !== -1) {
+  } else if ('.,-\\/;=[]`\''.indexOf(s) !== -1) {
     key.name = s;
   } else if (s.length === 1 && s >= 'a' && s <= 'z') {
     // lowercase letter
