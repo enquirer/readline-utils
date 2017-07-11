@@ -60,15 +60,16 @@ describe('.keypress', function() {
   });
 
   it('should emit multiple events for multiple characters', function(cb) {
-    listen('bar', 3, function(events) {
-      assert.strictEqual(events[0].name, 'b');
-      assert.strictEqual(events[0].key.name, 'b');
-
-      assert.strictEqual(events[1].name, 'a');
-      assert.strictEqual(events[1].key.name, 'a');
-
-      assert.strictEqual(events[2].name, 'r');
-      assert.strictEqual(events[2].key.name, 'r');
+    // . , - \ / ; = [ ] ` ';
+    var fixture = 'foo.bar[\'baz-qux\'] = \'path/to\\file-a.js,path/to\\file-b.js\';';
+    var len = fixture.length;
+    listen(fixture, len, function(events) {
+      for (var i = 0; i < len; i++) {
+        var char = fixture.charAt(i);
+        if (char === ' ') continue;
+        assert.strictEqual(events[i].name, char);
+        assert.strictEqual(events[i].key.name, char);
+      }
       cb();
     });
   });
