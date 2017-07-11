@@ -23,7 +23,9 @@ function listen(val, num, cb) {
 describe('.keypress', function() {
   beforeEach(function() {
     utils.keypress(process.stdin);
-    process.stdin.setRawMode(true);
+    if (typeof process.stdin.setRawMode === 'function') {
+      process.stdin.setRawMode(true);
+    }
   });
 
   it('should normalize number events', function(cb) {
