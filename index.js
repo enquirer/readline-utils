@@ -5,10 +5,9 @@ var isNum = require('is-number');
 var size = require('window-size');
 var readline = require('readline');
 var isBuffer = require('is-buffer');
-var EventEmitter = require('events');
 var flatten = require('arr-flatten');
-var isWindows = require('is-windows');
 var extend = require('extend-shallow');
+var isWindows = require('is-windows');
 var MuteStream = require('mute-stream');
 var stripColor = require('strip-color');
 var sizeUtils = require('window-size/utils');
@@ -446,7 +445,7 @@ utils.keypress = function(stream) {
   stream._keypressDecoder = new StringDecoder('utf8');
 
   function onData(b) {
-    if (listenerCount(stream, 'keypress') > 0) {
+    if (stream.listenerCount('keypress') > 0) {
       var r = stream._keypressDecoder.write(b);
       if (r) utils.emitKeypress(stream, r);
     } else {
@@ -463,7 +462,7 @@ utils.keypress = function(stream) {
     }
   }
 
-  if (listenerCount(stream, 'keypress') > 0) {
+  if (stream.listenerCount('keypress') > 0) {
     stream.on('data', onData);
   } else {
     stream.on('newListener', onNewListener);
@@ -804,13 +803,6 @@ utils.key = {
 
 function last(arr) {
   return arr[arr.length - 1];
-}
-
-function listenerCount(emitter, event) {
-  if (typeof emitter.listenerCount === 'function') {
-    return emitter.listenerCount(event);
-  }
-  return EventEmitter.listenerCount(emitter, event);
 }
 
 function isNumber(n) {
