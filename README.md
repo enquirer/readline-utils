@@ -1,4 +1,4 @@
-# readline-utils [![NPM version](https://img.shields.io/npm/v/readline-utils.svg?style=flat)](https://www.npmjs.com/package/readline-utils) [![NPM monthly downloads](https://img.shields.io/npm/dm/readline-utils.svg?style=flat)](https://npmjs.org/package/readline-utils) [![NPM total downloads](https://img.shields.io/npm/dt/readline-utils.svg?style=flat)](https://npmjs.org/package/readline-utils) [![Linux Build Status](https://img.shields.io/travis/enquirer/readline-utils.svg?style=flat&label=Travis)](https://travis-ci.org/enquirer/readline-utils) [![Windows Build Status](https://img.shields.io/appveyor/ci/enquirer/readline-utils.svg?style=flat&label=AppVeyor)](https://ci.appveyor.com/project/enquirer/readline-utils)
+# readline-utils [![NPM version](https://img.shields.io/npm/v/readline-utils.svg?style=flat)](https://www.npmjs.com/package/readline-utils) [![NPM monthly downloads](https://img.shields.io/npm/dm/readline-utils.svg?style=flat)](https://npmjs.org/package/readline-utils)  [![NPM total downloads](https://img.shields.io/npm/dt/readline-utils.svg?style=flat)](https://npmjs.org/package/readline-utils) [![Linux Build Status](https://img.shields.io/travis/enquirer/readline-utils.svg?style=flat&label=Travis)](https://travis-ci.org/enquirer/readline-utils) [![Windows Build Status](https://img.shields.io/appveyor/ci/enquirer/readline-utils.svg?style=flat&label=AppVeyor)](https://ci.appveyor.com/project/enquirer/readline-utils)
 
 > Readline utils, for moving the cursor, clearing lines, creating a readline interface, and more.
 
@@ -18,7 +18,7 @@ var utils = require('readline-utils');
 
 ## API
 
-### [.createInterface](index.js#L31)
+### [.createInterface](index.js#L33)
 
 Create a readline interface with the given `options`.
 
@@ -26,7 +26,7 @@ Create a readline interface with the given `options`.
 
 * `options` **{Object}**
 
-### [.up](index.js#L47)
+### [.up](index.js#L49)
 
 Move cursor up by `n` lines.
 
@@ -35,7 +35,7 @@ Move cursor up by `n` lines.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Lines up to move. Default is `1`.
 
-### [.down](index.js#L60)
+### [.down](index.js#L62)
 
 Move cursor down by `n` lines.
 
@@ -44,7 +44,7 @@ Move cursor down by `n` lines.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Lines down to move. Default is `1`.
 
-### [.left](index.js#L73)
+### [.left](index.js#L75)
 
 Move cursor left by `n` colums.
 
@@ -53,7 +53,7 @@ Move cursor left by `n` colums.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Characters to move left. Default is `1`.
 
-### [.right](index.js#L86)
+### [.right](index.js#L88)
 
 Move cursor right by `n` colums.
 
@@ -62,7 +62,7 @@ Move cursor right by `n` colums.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Characters to move right. Default is `1`.
 
-### [.move](index.js#L105)
+### [.move](index.js#L107)
 
 Move cursor up, down, left or right by `1` line.
 
@@ -80,7 +80,7 @@ rl.input.on('keypress', function(str, key) {
 });
 ```
 
-### [.auto](index.js#L125)
+### [.auto](index.js#L127)
 
 Callback function for the `keypress` event, to automatically move cursor up, down, left or right by `1` line.
 
@@ -96,7 +96,7 @@ var rl = utils.createInterface();
 rl.input.on('keypress', utils.auto(rl));
 ```
 
-### [.clearAfter](index.js#L151)
+### [.clearAfter](index.js#L153)
 
 Clear `n` lines after the cursor.
 
@@ -105,7 +105,7 @@ Clear `n` lines after the cursor.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Number of lines to clear
 
-### [.clearScreen](index.js#L164)
+### [.clearScreen](index.js#L166)
 
 Clear the terminal.
 
@@ -114,7 +114,7 @@ Clear the terminal.
 * `rl` **{Readline}**: Readline interface
 * `n` **{Number}**: Number of lines to clear
 
-### [.lastLine](index.js#L177)
+### [.lastLine](index.js#L179)
 
 Get the last line from the given `str`
 
@@ -123,7 +123,7 @@ Get the last line from the given `str`
 * `str` **{String}**
 * `returns` **{String}**
 
-### [.height](index.js#L189)
+### [.height](index.js#L191)
 
 Get the height (rows) of the given `str`
 
@@ -132,7 +132,7 @@ Get the height (rows) of the given `str`
 * `str` **{String}**
 * `returns` **{Number}**
 
-### [.hideCursor](index.js#L203)
+### [.hideCursor](index.js#L205)
 
 Hide the cursor so it doesn't show during a prompt. This is
 useful for multiple-choice or list prompts, or any prompt
@@ -143,7 +143,7 @@ where the user will not be entering input.
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Object}**: readline-utils object for chaining
 
-### [.showCursor](index.js#L216)
+### [.showCursor](index.js#L218)
 
 Show the cursor.
 
@@ -152,7 +152,7 @@ Show the cursor.
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Object}**: readline-utils object for chaining
 
-### [.close](index.js#L229)
+### [.close](index.js#L231)
 
 Close the interface, remove event listeners, and restore/unmute prompt functionality
 
@@ -161,7 +161,7 @@ Close the interface, remove event listeners, and restore/unmute prompt functiona
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Object}**: readline-utils object for chaining
 
-### [.forceClose](index.js#L250)
+### [.forceClose](index.js#L252)
 
 Close the interface when the keypress is `^C`
 
@@ -170,7 +170,7 @@ Close the interface when the keypress is `^C`
 * `rl` **{Readline}**: Readline interface
 * `returns` **{Object}**: readline-utils object for chaining
 
-### [.eraseLines](index.js#L266)
+### [.eraseLines](index.js#L268)
 
 Erase `n` lines
 
@@ -185,7 +185,7 @@ Erase `n` lines
 utils.eraseLines(3);
 ```
 
-### [.clearTrailingLines](index.js#L289)
+### [.clearTrailingLines](index.js#L291)
 
 Remove lines from the bottom of the terminal.
 
@@ -196,25 +196,28 @@ Remove lines from the bottom of the terminal.
 * `height` **{Number}**: Content height
 * `returns` **{Object}**: Returns the readline-utils object for chaining
 
-### [.cursorPosition](index.js#L307)
+### [.cursorPosition](index.js#L309)
 
 Remember the cursor position
 
 * `returns` **{Object}**: readline-utils object
 
-### [.restoreCursorPos](index.js#L317)
+### [.restoreCursorPos](index.js#L319)
 
 Restore the cursor position to where it has been previously stored.
 
 * `returns` **{Object}**: readline-utils object
 
-### [.cliWidth](index.js#L333)
+### [.cliWidth](index.js#L336)
 
 Get the width of the terminal
 
+**Params**
+
+* `fallback` **{Number}**: A fallback width to use if the actual width is not found.
 * `returns` **{Number}**: Returns the number of columns.
 
-### [.breakLines](index.js#L348)
+### [.breakLines](index.js#L354)
 
 Break lines longer than the cli width so we can normalize the
 natural line returns behavior accross terminals. (I don't see how
@@ -226,7 +229,7 @@ with https://github.com/jonschlinkert/word-wrap)
 * `lines` **{Array}**: Array of lines
 * `width` **{Number}**: Terminal width
 
-### [.forceLineReturn](index.js#L373)
+### [.forceLineReturn](index.js#L379)
 
 Joins the lines returned from [.breakLines](#breakLines).
 
@@ -236,7 +239,7 @@ Joins the lines returned from [.breakLines](#breakLines).
 * `width` **{Number}**: Terminal width
 * `returns` **{String}**
 
-### [.normalizeLF](index.js#L392)
+### [.normalizeLF](index.js#L398)
 
 Ensure the given `str` ends in a newline.
 
@@ -252,7 +255,7 @@ console.log(utils.normalizeLF('foo'));
 //=> 'foo\n'
 ```
 
-### [.keypress](index.js#L437)
+### [.keypress](index.js#L443)
 
 This module offers the internal "keypress" functionality from node-core's `readline` module, for your own programs and modules to use.
 
@@ -278,7 +281,7 @@ process.stdin.on('keypress', function(ch, key) {
 proces.stdin.resume();
 ```
 
-### [.enableMouse](index.js#L475)
+### [.enableMouse](index.js#L481)
 
 Enables "mousepress" events on the _input_ stream. Note
 that `stream` must be an _output_ stream (i.e. a Writable
@@ -288,7 +291,7 @@ Stream instance), usually `process.stdout`.
 
 * **{Stream}**: stream writable stream instance
 
-### [.disableMouse](index.js#L488)
+### [.disableMouse](index.js#L494)
 
 Disables "mousepress" events from being sent to the _input_
 
@@ -308,7 +311,7 @@ Some of this code was initially borrowed from [Inquirer][].
 ### Related projects
 
 * [choices-separator](https://www.npmjs.com/package/choices-separator): Separator for choices arrays in prompts. Based on the Separator from inquirer. | [homepage](https://github.com/enquirer/choices-separator "Separator for choices arrays in prompts. Based on the Separator from inquirer.")
-* [enquirer](https://www.npmjs.com/package/enquirer): Intuitive, plugin-based prompt system for node.js. Much faster and lighter alternative to Inquirer, with all… [more](https://github.com/enquirer/enquirer) | [homepage](https://github.com/enquirer/enquirer "Intuitive, plugin-based prompt system for node.js. Much faster and lighter alternative to Inquirer, with all the same prompt types and more, but without the bloat.")
+* [enquirer](https://www.npmjs.com/package/enquirer): Intuitive, plugin-based prompt system for node.js. | [homepage](http://enquirer.io "Intuitive, plugin-based prompt system for node.js.")
 * [prompt-choices](https://www.npmjs.com/package/prompt-choices): Create an array of multiple choice objects for use in prompts. | [homepage](https://github.com/enquirer/prompt-choices "Create an array of multiple choice objects for use in prompts.")
 
 ### Contributing
@@ -319,10 +322,10 @@ Please read the [contributing guide](.github/contributing.md) for advice on open
 
 ### Contributors
 
-| **Commits** | **Contributor** | 
-| --- | --- |
-| 41 | [jonschlinkert](https://github.com/jonschlinkert) |
-| 7 | [doowb](https://github.com/doowb) |
+| **Commits** | **Contributor** |  
+| --- | --- |  
+| 44 | [jonschlinkert](https://github.com/jonschlinkert) |  
+| 18 | [doowb](https://github.com/doowb) |  
 
 ### Building docs
 
@@ -356,4 +359,4 @@ Released under the [MIT License](LICENSE).
 
 ***
 
-_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.6.0, on May 21, 2017._
+_This file was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme), v0.6.0, on July 11, 2017._
